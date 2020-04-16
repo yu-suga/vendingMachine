@@ -9,12 +9,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import Model.ProductLogic;
 import beans.ProductBeans;
-import beans.UserBeans;
 import dao.ProductContentDAO;
-import dao.ProductLogicDAO;
 
 
 /**
@@ -29,7 +27,12 @@ public class ProductControll extends HttpServlet {
 
 		//商品一覧を取得
 		ProductContentDAO productContentDAO = new ProductContentDAO();
-		List<ProductBeans> proList=productContentDAO.findAll();
+		List<ProductBeans> proList = null;
+		try {
+			proList = productContentDAO.findAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		//リクエストスコープに保存
 		request.setAttribute("proList",proList );
@@ -45,28 +48,28 @@ public class ProductControll extends HttpServlet {
 
 		//リクエストパラメーターを取得
 		int id =Integer.parseInt(request.getParameter("id"));	//商品番号
-		int inputMoney =Integer.parseInt(request.getParameter("inputMoney"));	//金額
+		int inputMoney =Integer.parseInt(request.getParameter("inputMoney"));	//入力金額
 
 		//入力値をプロパティに設定
 		ProductBeans productBeans = new ProductBeans();
 		productBeans.setId(id);
+		productBeans.setId(inputMoney);
 
-		UserBeans userBeans = new UserBeans();
-		userBeans.setInputMoney(inputMoney);
+		//DB
+		ProductContentDAO productContentDAO = new ProductContentDAO();
 
-		//入力値の金額処理、在庫処理を行うビジネスロジックに受け渡し
-		ProductLogic productLogic = new ProductLogic();
-		productLogic.execute(productBeans,userBeans);
+		try {
+		productBeans = productContentDAO.SelectName();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 
-		//リクエストスコープに保存
-		request.setAttribute("productBeans",productBeans);
-
-		//DB内の在庫数の更新
-		ProductLogicDAO productLogicDAO = new ProductLogicDAO();
+		HttpSession session = request.getSession();
+		session.setAttribute("productBeans", productBeans);
 
 
 		//商品確認画面に遷移
-		RequestDispatcher dispatcher =request.getRequestDispatcher("/WEB-INF/jsp/completed.jsp");
+		RequestDispatcher dispatcher =request.getRequestDispatcher("/WEB-INF/jsp/check.jsp");
 		dispatcher.forward(request, response);
 
 
