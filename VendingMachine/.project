@@ -28,4 +28,21 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>WebContent/css/lineup.css</name>
+			<type>1</type>
+			<locationURI>PARENT-5-PROJECT_LOC/pleiades/workspace/VendingMachine/css/lineup.css</locationURI>
+		</link>
+		<link>
+			<name>WebContent/css/main.css</name>
+			<type>1</type>
+			<locationURI>PARENT-5-PROJECT_LOC/pleiades/workspace/VendingMachine/css/main.css</locationURI>
+		</link>
+		<link>
+			<name>WebContent/css/productLineup.css</name>
+			<type>1</type>
+			<locationURI>PARENT-5-PROJECT_LOC/pleiades/workspace/VendingMachine/css/productLineup.css</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

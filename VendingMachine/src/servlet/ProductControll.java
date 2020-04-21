@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -9,21 +10,25 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import beans.ProductBeans;
 import dao.ProductContentDAO;
 
+@WebServlet("/ProductControll")
 
 /**
- * Servlet implementation class ProductControll
+ * 商品一覧画面から購入確認までのサーブレットクラス
+ * @author yu199
+ *
  */
-@WebServlet("/ProductControll")
 public class ProductControll extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	/**
+	 * Home画面から商品一覧画面へgetで受け取るメソッド
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		//商品一覧を取得
 		ProductContentDAO productContentDAO = new ProductContentDAO();
@@ -35,44 +40,38 @@ public class ProductControll extends HttpServlet {
 		}
 
 		//リクエストスコープに保存
-		request.setAttribute("proList",proList );
+		request.setAttribute("proList", proList);
 
 		//商品一覧画面に遷移
-		RequestDispatcher dispatcher =request.getRequestDispatcher("/WEB-INF/jsp/lineup.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/lineup.jsp");
 		dispatcher.forward(request, response);
 
 	}
 
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	/**
+	 * lineup.jspで入力された商品番号と金額をpostで受け取るメソッド
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		//リクエストパラメーターを取得
-		int id =Integer.parseInt(request.getParameter("id"));	//商品番号
-		int inputMoney =Integer.parseInt(request.getParameter("inputMoney"));	//入力金額
+		int inputId = Integer.parseInt(request.getParameter("inputId")); //商品番号
 
-		//入力値をプロパティに設定
-		ProductBeans productBeans = new ProductBeans();
-		productBeans.setId(id);
-		productBeans.setId(inputMoney);
-
-		//DB
+		ProductBeans productBeans = null;
+		//DBに接続
 		ProductContentDAO productContentDAO = new ProductContentDAO();
-
+		//リクエストパラメーターで取得した値をDAOのselectNameメソッドに引数として設定
 		try {
-		productBeans = productContentDAO.SelectName();
-		}catch (Exception e) {
+			productBeans = productContentDAO.selectName(inputId);
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-		HttpSession session = request.getSession();
-		session.setAttribute("productBeans", productBeans);
-
+		//リクエストスコープに保存
+		request.setAttribute("productBeans", productBeans);
 
 		//商品確認画面に遷移
-		RequestDispatcher dispatcher =request.getRequestDispatcher("/WEB-INF/jsp/check.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/check.jsp");
 		dispatcher.forward(request, response);
-
-
 	}
 
 }
