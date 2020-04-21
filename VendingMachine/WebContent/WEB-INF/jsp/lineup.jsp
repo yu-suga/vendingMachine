@@ -65,7 +65,7 @@
 	<div class="formContent">
 
 		<%--購入したい商品を入力しPOST通信でProductControllへ --%>
-		<form action="ProductAdd" method="post">
+		<form action="ProductControll" method="post">
 			<p>いらっしゃいませ、商品番号と投入金額を入力してください。</p>
 			<div class="komoku">
 				<label>商品番号</label><input type="number" name="inputId"><br>
@@ -79,6 +79,7 @@
 		</form>
 	</div>
 
+	<%--ホームボタンを押すとホーム画面遷移 --%>
 	<form method="post" class="home">
 		<a href="Home" class="homeButton">ホーム画面</a>
 	</form>
