@@ -17,7 +17,7 @@
 	</header>
 
 	<form method="get" class="menu">
-		<a href="StockController" class="button">商品情報を変更</a><br> <a
+		<a href="StockController" class="button">在庫情報を変更</a><br> <a
 			href="ProductAdd" class="button">商品を追加</a><br> <a
 			href="ProductDelete" class="button">商品情報を削除 </a><br>
 	</form>

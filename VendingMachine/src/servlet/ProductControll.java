@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import beans.ProductBeans;
 import dao.ProductContentDAO;
@@ -56,6 +57,8 @@ public class ProductControll extends HttpServlet {
 
 		//リクエストパラメーターを取得
 		int inputId = Integer.parseInt(request.getParameter("inputId")); //商品番号
+		int clientMoney = Integer.parseInt(request.getParameter("clientMoney")); //商品番号
+
 
 		ProductBeans productBeans = null;
 		//DBに接続
@@ -66,8 +69,12 @@ public class ProductControll extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		//リクエストスコープに保存
-		request.setAttribute("productBeans", productBeans);
+
+		productBeans.setClientMoney(clientMoney);
+
+		//セッションスコープに保存
+		HttpSession session = request.getSession();
+		session.setAttribute("productBeans", productBeans);
 
 		//商品確認画面に遷移
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/check.jsp");

@@ -13,6 +13,8 @@ public class ProductBeans implements Serializable {
 	private int money; //料金
 	private int stock; //在庫数
 	private int clientMoney; //顧客が入力した料金
+	private int change; //お釣り
+	private int shortage; //不足金額
 
 	public ProductBeans() {
 	}
@@ -63,5 +65,21 @@ public class ProductBeans implements Serializable {
 
 	public void setClientMoney(int clientMoney) {
 		this.clientMoney = clientMoney;
+	}
+
+	public int getChange() {
+		return change;
+	}
+
+	public void setChange(int change) {
+		this.change = change;
+	}
+
+	public int getShortage() {
+		return shortage;
+	}
+
+	public void setShortage(int shortage) {
+		this.shortage = shortage;
 	}
 }

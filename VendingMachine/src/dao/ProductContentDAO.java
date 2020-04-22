@@ -65,7 +65,7 @@ public class ProductContentDAO {
 		ProductBeans productBeans = null;
 
 		//商品一覧画面で入力された商品番号と一致する商品名と金額を抽出
-		String sql = "select name,money from productcontent where id = ?";
+		String sql = "select id,name,money,stock from productcontent where id = ?";
 
 		try {
 			PreparedStatement pStmt = con.prepareStatement(sql);
@@ -86,6 +86,31 @@ public class ProductContentDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 
+		}
+		return productBeans;
+	}
+
+	/**
+	 * 購入された商品の在庫を1つ減らす
+	 */
+	public ProductBeans updateStock(ProductBeans productBeans) throws SQLException {
+
+
+		int inputStock = productBeans.getStock();
+		int inputId = productBeans.getId();
+
+		String sql = "update productcontent set stock = ? where id = ?";
+
+		try {
+			PreparedStatement pStmt = con.prepareStatement(sql);
+			//パラメーターをセット
+			pStmt.setInt(1, inputStock);
+			pStmt.setInt(2, inputId);
+
+			pStmt.executeUpdate();
+
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
 		return productBeans;
 	}

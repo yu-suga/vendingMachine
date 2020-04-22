@@ -33,7 +33,7 @@ public class ManagementDAO {
 			pStmt.setInt(2, inputId);
 
 			//SQLを実行
-			int i = pStmt.executeUpdate();
+			pStmt.executeUpdate();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -61,7 +61,7 @@ public class ManagementDAO {
 			pStmt.setInt(4, inputStock);
 
 			//SQLを実行
-			int i = pStmt.executeUpdate();
+			pStmt.executeUpdate();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -81,7 +81,7 @@ public class ManagementDAO {
 			pStmt.setInt(1, inputId);
 
 			//SQLを実行
-			int i = pStmt.executeUpdate();
+			pStmt.executeUpdate();
 
 		} catch (Exception e) {
 			e.printStackTrace();

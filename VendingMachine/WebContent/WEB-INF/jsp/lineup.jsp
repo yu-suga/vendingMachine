@@ -69,6 +69,7 @@
 			<p>いらっしゃいませ、商品番号と投入金額を入力してください。</p>
 			<div class="komoku">
 				<label>商品番号</label><input type="number" name="inputId"><br>
+				<label>投入金額</label><input type="number" name="clientMoney"><br>
 			</div>
 			<br>
 

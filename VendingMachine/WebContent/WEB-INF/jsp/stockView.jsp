@@ -52,7 +52,7 @@
 		%>
 
 		<%--変更したい在庫数を入力するフォーム --%>
-		<form action="ProductAdd" method="post">
+		<form action="StockController" method="post">
 			<div class="komoku">
 				<label>商品番号</label><input type="number" name="inputId"><br>
 			</div>
