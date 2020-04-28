@@ -44,5 +44,10 @@
 			<type>1</type>
 			<locationURI>PARENT-5-PROJECT_LOC/pleiades/workspace/VendingMachine/css/productLineup.css</locationURI>
 		</link>
+		<link>
+			<name>WebContent/css/stock.css</name>
+			<type>1</type>
+			<locationURI>PARENT-5-PROJECT_LOC/pleiades/workspace/VendingMachine/css/stock.css</locationURI>
+		</link>
 	</linkedResources>
 </projectDescription>

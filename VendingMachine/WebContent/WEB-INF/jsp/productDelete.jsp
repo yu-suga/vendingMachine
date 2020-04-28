@@ -13,59 +13,77 @@
 	rel="stylesheet" type="text/css">
 </head>
 <body>
-	<div class="lineup">
-		<header>
-			<h1>商品削除画面</h1>
-		</header>
-		<%--リクエストスコープから全商品情報を取得 --%>
-		<%
-			List<ProductBeans> proList = (List<ProductBeans>) request.getAttribute("proList");
-		%>
 
-		<%
-			for (ProductBeans productBeans : proList) {
-		%>
+	<header>
+		<h1>商品削除画面</h1>
+	</header>
+	<main>
+		<div class="lineup">
+			<%--リクエストスコープから全商品情報を取得 --%>
+			<%
+				List<ProductBeans> proList = (List<ProductBeans>) request.getAttribute("proList");
+			%>
 
-		<%--商品ラインナップを表示 --%>
-		<div class="menu">
-			<div class="content">
-				<%--商品番号--%>
-				<%=productBeans.getId()%>番
+			<%
+				for (ProductBeans productBeans : proList) {
+			%>
+
+			<%--商品ラインナップを表示 --%>
+			<div class="menu">
+				<div class="content">
+					<%--商品番号--%>
+					<%=productBeans.getId()%>番
+				</div>
+
+				<div class="content">
+					<%--商品名--%>
+					<%=productBeans.getName()%>
+				</div>
+
+				<div class="content">
+					<%--商品金額--%>
+					<%=productBeans.getMoney()%>円
+				</div>
+
+				<div class="content">
+					<%--商品在庫--%>
+					(在庫数)<%=productBeans.getStock()%>個
+				</div>
 			</div>
+			<br>
 
-			<div class="content">
-				<%--商品名--%>
-				<%=productBeans.getName()%>
-			</div>
-
-			<div class="content">
-				<%--商品金額--%>
-				<%=productBeans.getMoney()%>円
-			</div>
-
-			<div class="content">
-				<%--商品在庫--%>
-				(在庫数)<%=productBeans.getStock()%>個
-			</div>
+			<%
+				}
+			%>
 		</div>
-		<br>
-
-		<%
-			}
-		%>
-
 		<%--削除したい商品番号を入力するフォーム --%>
-		<form action="ProductDelete" method="post">
-			<div class="komoku">
-				<label>商品番号</label><input type="number" name="inputId" max=""><br>
-			</div>
-			<div class="komoku">
-				<input type="submit" value="削除する">
-			</div>
+		<form action="ProductDelete" method="post" class="formContent">
+
+			<%--db内の商品番号を選択式で表示 --%>
+			<label>商品番号</label>
+			<select name="inputId">
+				<%
+					for (ProductBeans productBeans : proList) {
+				%>
+				<option value="<%=productBeans.getId()%>">
+					<%=productBeans.getId()%>
+				</option>
+				<%
+					}
+				%>
+
+			</select> <br>
+
+
+			<input type="submit" value="削除する" class="submitButton">
+
 		</form>
-	</div>
-	<form method="post" class="home">
-		<a href="Home" class="homeButton">ホーム画面</a>
-	</form>
+	</main>
+	<footer>
+		<%--ホームボタンを押すとホーム画面遷移 --%>
+		<form method="post" class="home">
+			<a href="Home" class="homeButton">ホーム画面</a>
+		</form>
+	</footer>
 </body>
 </html>

@@ -56,8 +56,14 @@ public class ProductAdd extends HttpServlet {
 
 		//stockAdd.jspで入力された値を取得
 		String inputName = request.getParameter("inputName"); //商品名
-		int inputMoney = Integer.parseInt(request.getParameter("inputMoney")); //商品金額
-		int inputStock = Integer.parseInt(request.getParameter("inputStock")); //在庫数
+		String money = request.getParameter("inputMoney"); //商品金額
+		String stock = request.getParameter("inputStock"); //在庫数
+		//在庫数が入力されているか判定、入力されていた場合の処理内容
+		if (inputName != null && inputName.length() != 0 || money != null && money.length() != 0 && stock != null && stock.length() != 0) {
+
+		//money,nameをint型に変換
+		int inputMoney = Integer.parseInt(money);
+		int inputStock = Integer.parseInt(stock);
 
 		//DAOからDBに接続
 		ManagementDAO managementDAO = new ManagementDAO();
@@ -68,6 +74,12 @@ public class ProductAdd extends HttpServlet {
 		//追加完了画面に遷移
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/managementComplete.jsp");
 		dispatcher.forward(request, response);
+
+		//入力欄が空欄の場合、エラーページ遷移--
+		} else if (inputName.equals(null) || inputName.length() == 0 || money.length() ==0 || stock.length() == 0) {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/error.jsp");
+			dispatcher.forward(request, response);
+		}
 
 	}
 

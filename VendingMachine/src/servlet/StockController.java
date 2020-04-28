@@ -52,19 +52,29 @@ public class StockController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		//stockView.jspから送られてきた変更する商品番号と在庫名を取得
+		//stockView.jspから送られてきた変更する在庫数を取得
+		String stock = request.getParameter("inputStock"); //変更希望の在庫数
 
-		int inputId = Integer.parseInt(request.getParameter("inputId")); //商品番号
-		int inputStock = Integer.parseInt(request.getParameter("inputStock")); //変更希望の在庫数
+		//在庫数が入力されているか判定、入力されていた場合の処理内容
+		if (stock != null && stock.length() != 0) {
 
-		//DAOからDBに接続
-		ManagementDAO managementDAO = new ManagementDAO();
+			//在庫数をint型へ変換、入力された商品番号を取得
+			int inputId = Integer.parseInt(request.getParameter("inputId"));//商品番号取得
+			int inputStock = Integer.parseInt(stock);
 
-		//取得した商品番号と在庫名をManagementDAOのstockUpdateの引数に設定
-		managementDAO.stockUpdate(inputId, inputStock);
+			//DAOからDBに接続
+			ManagementDAO managementDAO = new ManagementDAO();
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/managementComplete.jsp");
-		dispatcher.forward(request, response);
+			//取得した商品番号と在庫名をManagementDAOのstockUpdateの引数に設定
+			managementDAO.stockUpdate(inputId, inputStock);
+
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/managementComplete.jsp");
+			dispatcher.forward(request, response);
+			//入力欄が空欄の場合、エラーページ遷移--
+		} else if (stock.length() == 0) {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/error.jsp");
+			dispatcher.forward(request, response);
+		}
 
 	}
 

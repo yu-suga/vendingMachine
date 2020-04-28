@@ -17,13 +17,9 @@ public class PurchaseLogic {
 		int clientMoney = productBeans.getClientMoney();//入力金額
 		int money = productBeans.getMoney(); //表示金額
 
-		int change = clientMoney - money; //お釣りを計算し変数chargeに格納
+		int change = clientMoney - money; //お釣りを計算し変数changeに格納
 
-		//お釣りが0以上の場合はproductBeansのsetCharge()に格納
-		if (change >= 0) {
-			productBeans.setChange(change);
-			//お釣りが0以下の場合は金額不足メッセージを表示
-		}
+		productBeans.setChange(change);
 		return productBeans;
 	}
 

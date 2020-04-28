@@ -16,19 +16,18 @@ h1 {
 	padding-top: 80px;
 }
 
-.confirm{
+.confirm {
 	text-align: center;
 	padding: 40px;
 }
 
-.checkForm{
+.checkForm {
 	text-align: center;
 	padding: 20px;
 }
 
-.checkButton{
+.checkButton {
 	text-align: center;
-
 }
 
 .home {
@@ -43,12 +42,20 @@ h1 {
 </style>
 <body>
 
-	<h1>購入確認画面</h1>
+
 
 	<%--スコープに保存したProductBeansを取得 --%>
 	<%
 		ProductBeans productBeans = (ProductBeans) session.getAttribute("productBeans");
 	%>
+
+	<%--在庫があれば購入確認ボタンと選択した商品名を表示 --%>
+	<%
+		if (productBeans.getStock() != 0 ) {
+	%>
+	<header>
+		<h1>購入確認画面</h1>
+	</header>
 
 	<%--ProductBeansから商品番号、商品名、金額を表示 --%>
 	<div class="confirm">
@@ -59,13 +66,24 @@ h1 {
 	<form action="PurchaseCheck" method="post" class="checkForm">
 		<input type="submit" value="購入確定" name="checkButton">
 	</form>
+	<%--在庫が不足していた場合「売り切れ」と表示 --%>
+	<%
+		} else if (productBeans.getStock() == 0) {
+	%>
 
+	<div class="confirm">
+		申し訳ございません。<%=productBeans.getName()%>は売り切れです。
+	</div>
+
+
+	<%
+		}
+	%>
 	<%--ホームボタンを押すとホーム画面遷移 --%>
-	<form method="post" class="home">
-		<a href="Home" class="homeButton">ホーム画面</a>
-	</form>
-
-
-
+	<footer>
+		<form method="post" class="home">
+			<a href="Home" class="homeButton">ホーム画面</a>
+		</form>
+	</footer>
 </body>
 </html>

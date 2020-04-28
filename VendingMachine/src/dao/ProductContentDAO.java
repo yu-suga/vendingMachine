@@ -85,6 +85,7 @@ public class ProductContentDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 
 		}
 		return productBeans;

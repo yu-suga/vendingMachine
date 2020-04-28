@@ -56,29 +56,40 @@ public class ProductControll extends HttpServlet {
 			throws ServletException, IOException {
 
 		//リクエストパラメーターを取得
-		int inputId = Integer.parseInt(request.getParameter("inputId")); //商品番号
-		int clientMoney = Integer.parseInt(request.getParameter("clientMoney")); //商品番号
 
+		String money = request.getParameter("clientMoney"); //入力金額
 
-		ProductBeans productBeans = null;
-		//DBに接続
-		ProductContentDAO productContentDAO = new ProductContentDAO();
-		//リクエストパラメーターで取得した値をDAOのselectNameメソッドに引数として設定
-		try {
-			productBeans = productContentDAO.selectName(inputId);
-		} catch (SQLException e) {
-			e.printStackTrace();
+		//入力されているか判定、入力されていた場合の処理内容
+		if (money != null && money.length() !=0 ) {
+
+			int inputId = Integer.parseInt(request.getParameter("inputId"));
+			int clientMoney = Integer.parseInt(money);
+
+			ProductBeans productBeans = null;
+			//DBに接続
+			ProductContentDAO productContentDAO = new ProductContentDAO();
+			//リクエストパラメーターで取得した値をDAOのselectNameメソッドに引数として設定
+			try {
+				productBeans = productContentDAO.selectName(inputId);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			productBeans.setClientMoney(clientMoney);
+
+			//セッションスコープに保存
+			HttpSession session = request.getSession();
+			session.setAttribute("productBeans", productBeans);
+
+			//商品確認画面に遷移
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/check.jsp");
+			dispatcher.forward(request, response);
+
+			//入力欄が空欄の場合、エラーページ遷移--
+		} else if(money.length() ==0) {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/error.jsp");
+			dispatcher.forward(request, response);
 		}
-
-		productBeans.setClientMoney(clientMoney);
-
-		//セッションスコープに保存
-		HttpSession session = request.getSession();
-		session.setAttribute("productBeans", productBeans);
-
-		//商品確認画面に遷移
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/check.jsp");
-		dispatcher.forward(request, response);
 	}
 
 }

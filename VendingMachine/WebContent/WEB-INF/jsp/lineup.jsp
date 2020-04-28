@@ -16,19 +16,23 @@
 </head>
 <body>
 
-	<h1>商品一覧</h1>
+	<header>
+		<h1>商品一覧</h1>
+	</header>
 
-	<div class="lineup">
-		<%--リクエストスコープから全商品情報を取得 --%>
-		<%
-			List<ProductBeans> proList = (List<ProductBeans>) request.getAttribute("proList");
-		%>
+	<main>
 
-		<%
-			for (ProductBeans productBeans : proList) {
-		%>
-		<%--商品ラインナップを表示 --%>
-		<div class="menu">
+		<div class="lineup">
+			<%--リクエストスコープから全商品情報を取得 --%>
+			<%
+				List<ProductBeans> proList = (List<ProductBeans>) request.getAttribute("proList");
+			%>
+
+
+			<%
+				for (ProductBeans productBeans : proList) {
+			%>
+			<%--商品ラインナップを表示 --%>
 			<table>
 				<tr>
 					<%--商品番号--%>
@@ -51,39 +55,62 @@
  	if (stock == 0) {
  %>
 						<p>売り切れ</p> <%
+ 	int outstock = stock;
+ %> <%
  	}
  %>
 					</td>
 				</tr>
 			</table>
+			<%
+				}
+			%>
+
 		</div>
-		<%
-			}
-		%>
-	</div>
-	<%--入力フォーム --%>
-	<div class="formContent">
+		<%--入力フォーム --%>
+
 
 		<%--購入したい商品を入力しPOST通信でProductControllへ --%>
-		<form action="ProductControll" method="post">
+		<form action="ProductControll" method="post" class="formContent">
 			<p>いらっしゃいませ、商品番号と投入金額を入力してください。</p>
-			<div class="komoku">
-				<label>商品番号</label><input type="number" name="inputId"><br>
-				<label>投入金額</label><input type="number" name="clientMoney"><br>
-			</div>
-			<br>
 
 
-			<div class="komoku">
-				<input type="submit" value="購入する">
-			</div>
+			<%--db内の商品番号を選択式で表示 --%>
+			<label>商品番号</label>
+			<select name="inputId">
+				<%
+					for (ProductBeans productBeans : proList) {
+				%>
+				<option value="<%=productBeans.getId()%>">
+					<%=productBeans.getId()%>
+				</option>
+				<%
+					}
+				%>
+
+			</select> <br>
+
+			<label>投入金額</label><input type="number" name="clientMoney"
+				min="100" max="1000" step="10" list="number" maxlength="4">
+			<datalist id="number">
+				<option value="200">
+				<option value="500">
+				<option value="700">
+				<option value="1000">
+			</datalist>
+
+			<br> <br> <input type="submit" value="購入する"
+				class="parchaseButton">
+
 		</form>
-	</div>
 
-	<%--ホームボタンを押すとホーム画面遷移 --%>
-	<form method="post" class="home">
-		<a href="Home" class="homeButton">ホーム画面</a>
-	</form>
 
+	</main>
+	<footer>
+		<%--ホームボタンを押すとホーム画面遷移 --%>
+		<form method="post" class="home">
+			<a href="Home" class="homeButton">ホーム画面</a>
+		</form>
+	</footer>
 </body>
 </html>

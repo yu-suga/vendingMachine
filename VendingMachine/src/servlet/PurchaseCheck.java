@@ -39,21 +39,29 @@ public class PurchaseCheck extends HttpServlet {
 		//purchaseLogicをインスタンス化し引数にproductbensを設定
 		PurchaseLogic purchaseLogic = new PurchaseLogic();
 		purchaseLogic.changeLogic(productBeans);
-		purchaseLogic.stockLogic(productBeans);
 
-		//1つ減らした在庫をDBに格納、更新
-		ProductContentDAO productContentDAO = new ProductContentDAO();
-		try {
-			productBeans = productContentDAO.updateStock(productBeans);
-		} catch (SQLException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
+		//入力金額が不足していなければ以下の処理を実行
+		if (productBeans.getChange() >= 0) {
+
+			//1つ減らした在庫をDBに格納、在庫数を更新
+			ProductContentDAO productContentDAO = new ProductContentDAO();
+			try {
+				productBeans = productContentDAO.updateStock(productBeans);
+			} catch (SQLException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+
+			session.setAttribute("productBeans", productBeans);
+
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/purchaseDone.jsp");
+			dispatcher.forward(request, response);
+
+			//入力金額が表示金額より不足している場合エラーページへ遷移
+		} else if (productBeans.getChange() < 0) {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/moneyError.jsp");
+			dispatcher.forward(request, response);
 		}
-
-		session.setAttribute("productBeans", productBeans);
-
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/purchaseDone.jsp");
-		dispatcher.forward(request, response);
 
 	}
 
